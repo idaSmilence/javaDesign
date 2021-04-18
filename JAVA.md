@@ -6112,15 +6112,15 @@ Raft使用**心跳机制**来触发选举。当server启动时，初始状态都
 
 **全量缓存保证高效读取**
 
-![图片1.png](https://tva1.sinaimg.cn/large/008eGmZEly1goikiu9crfj31jk0jg0ux.jpg)
+<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185425386.png" alt="image-20210418185425386" style="zoom:50%;" />
 
 所有数据都存储在缓存里，读服务在查询时不会再降级到数据库里，所有的请求都完全依赖缓存。此时，因降级到数据库导致的毛刺问题就解决了。但全量缓存并**没有解决更新时的分布式事务**问题，反而把问题放大了。因为全量缓存**对数据更新要求更加严格**，要求所有数据库**已有数据和实时更新**的数据必须完全同步至缓存，不能有遗漏。对于此问题，一种有效的方案是采用**订阅数据库的 Binlog** 实现数据同步
 
-![图片2.png](https://tva1.sinaimg.cn/large/008eGmZEly1goikl3o2cyj31jk0n9q6n.jpg)
+<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185457610.png" alt="image-20210418185457610" style="zoom:50%;" />
 
 ​	现在很多开源工具（如**阿里的 Canal**等）可以模拟主从复制的协议。通过模拟协议读取主数据库的 Binlog 文件，从而获取主库的所有变更。对于这些变更，它们开放了各种接口供业务服务获取数据。
 
-![图片3.png](https://s0.lgstatic.com/i/image2/M01/05/F6/Cip5yGABeDCAYarfAAFnB1IDAUU439.png)
+<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185516743.png" alt="image-20210418185516743" style="zoom:50%;" />
 
 ​	将 Binlog 的中间件挂载至目标数据库上，就可以**实时获取该数据库的所有变更数据**。对这些变更数据解析后，便可**直接写入缓存里**。优点还有：
 
@@ -6132,7 +6132,7 @@ Raft使用**心跳机制**来触发选举。当server启动时，初始状态都
 
 **缺点**不可避免：1、增加复杂度 2、消耗缓存资源 3、需要筛选和压缩数据 4、极端情况数据丢失
 
-![图片7.png](https://s0.lgstatic.com/i/image/M00/8E/18/CgqCHmABhX-ANvJRAAGJqu4p-N8813.png)
+<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185549520.png" alt="image-20210418185549520" style="zoom:50%;" />
 
 可以通过异步校准方案进行补齐，但是会损耗数据库性能。但是此方案会隐藏中间件使用错误的细节，线上环境前期更重要的是记录日志排查在做后续优化，不能本末倒置。
 
@@ -6152,7 +6152,7 @@ Raft使用**心跳机制**来触发选举。当server启动时，初始状态都
 
 #### **多机房实时热备**
 
-![6.png](https://tva1.sinaimg.cn/large/008eGmZEly1goikz0q2zyj31jk0n9ae0.jpg)
+<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185610597.png" alt="6.png" style="zoom:50%;" />
 
 两套缓存集群可以分别部署到不同城市的机房。读服务也相应地部署到不同城市或不同分区。在承接请求时，不同机房或分区的读服务只依赖同样属性的缓存集群。此方案有两个好处。
 
@@ -6276,19 +6276,4 @@ Raft使用**心跳机制**来触发选举。当server启动时，初始状态都
 
 - 基于JWT的Token，数据从cache或者数据库中获取
 - 基于Tomcat的Redis，简单配置conf文件
-- 基于Spring的Redis，支持SpringCloud和Springboot
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- 基于Spring的Redis，支持SpringCloud和Springb
