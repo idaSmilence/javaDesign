@@ -1,3 +1,5 @@
+[TOC]
+
 
 
 # 一、基础篇
@@ -4129,7 +4131,7 @@ public void write(String key,Object data){
 
 #### 4、集群模式=写多
 
-![image-20210418174340944](/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418174340944.png)
+
 
 ​	为了避免单一节点负载过高导致不稳定，集群模式采用**一致性哈希算法或者哈希槽的方法**将 Key 分布到各个节点上。其中，每个 Master 节点后跟若干个 Slave 节点，用于**出现故障时做主备切换**，客户端可以**连接任意 Master 节点**，集群内部会按照**不同 key 将请求转发到不同的 Master** 节点
 
