@@ -1,4 +1,4 @@
-- [一、基础篇](#一基础篇)
+- sa[一、基础篇](#一基础篇)
   - [网络基础](#网络基础)
     - [**TCP三次握手**](#tcp三次握手)
       - [**1、OSI与TCP/IP 模型**](#1osi与tcpip-模型)
@@ -3040,7 +3040,7 @@ disk_writer_threads：单个磁盘写线程数
 | 可重复读 | 可能会导致幻读                   |
 | 可串行化 | 不会产⽣⼲扰                     |
 
-
+ms
 
 #### **3、默认隔离级别-RR** 
 
@@ -3854,7 +3854,7 @@ EVCache 是线性扩展的，可以在一分钟之内完成扩容，在几分钟
 
 ​	**和Zookeeper一样，CP模型追求数据一致性，**越来越多的系统开始用它保存关键数据。比如，秒杀系统经常用它**保存各节点信**息，以便控制消费 MQ 的服务数量。还有些业务系统的**配置数据**，也会通过 etcd 实时同步给业务系统的各节点，比如，秒杀管理后台会使用 etcd 将秒杀活动的**配置数据实时同步给秒杀 API 服务各节点**。
 
-![image-20210418174251742](/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418174251742.png)
+![image-20210418174251742](https://tva1.sinaimg.cn/large/008i3skNly1gx2tg9qs00j30ta0g40vc.jpg)
 
 
 
@@ -4915,6 +4915,8 @@ SequenceNumber：#对于每个PID发送数据的每个Topic都对应一个从0�
 增长推送间隔 max.poll.interval.ms=t+1 minutes
 ```
 
+[这些年，为了进阿里背过的面试题]()
+
 
 
 #### ZooKeeper 的作用
@@ -5150,7 +5152,7 @@ public void refresh() throws BeansException, IllegalStateException { synchronize
 
 2. 在类中定义⼀个ThreadLocal成员变量，将需要的可变成员变量保存在 ThreadLocal 中
 
-  **ThreadLocal**：
+ **ThreadLocal**：
 
   ​		每个线程中都有一个自己的ThreadLocalMap类对象，可以将线程自己的对象保持到其中，各管各的，线程可以正确的访问到自己的对象。
 
@@ -5176,7 +5178,7 @@ Spring中循环依赖场景有:
 
 ​	Spring 启动的时候会把所有bean信息(包括XML和注解)解析转化成Spring能够识别的BeanDefinition并存到Hashmap里供下面的初始化时用，然后对每个 BeanDefinition 进行处理。普通 Bean 的初始化是在容器启动初始化阶段执行的，而被lazy-init=true修饰的 bean 则是在从容器里第一次进行**context.getBean() 时进行触发**。
 
-
+​     
 
 **三级缓存解决循环依赖问题**
 
@@ -5776,7 +5778,6 @@ Hystrix区别：
 > Nacos是阿⾥巴巴开源的⼀个针对微服务架构中**服务发现**、**配置管理**和**服务管理平台**。
 >
 > Nacos就是**注册中⼼+配置中⼼**的组合（Nacos=Eureka+Confifig+Bus）
->
 
 **Nacos**功能特性
 
@@ -5986,7 +5987,6 @@ Feign+配置中心实现动态日志
 # **九、分布式篇**
 
 > 分布式系统是一个硬件或软件组件分布在不同的网络计算机上，彼此之间仅仅通过消息传递进行通信和协调的系统。
->
 
 ### **发展历程**
 
@@ -6112,15 +6112,15 @@ Raft使用**心跳机制**来触发选举。当server启动时，初始状态都
 
 **全量缓存保证高效读取**
 
-<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185425386.png" alt="image-20210418185425386" style="zoom:50%;" />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gx2u2g0qkvj31500la0uf.jpg" alt="image-20211205121457205" style="zoom: 50%;" />
 
 所有数据都存储在缓存里，读服务在查询时不会再降级到数据库里，所有的请求都完全依赖缓存。此时，因降级到数据库导致的毛刺问题就解决了。但全量缓存并**没有解决更新时的分布式事务**问题，反而把问题放大了。因为全量缓存**对数据更新要求更加严格**，要求所有数据库**已有数据和实时更新**的数据必须完全同步至缓存，不能有遗漏。对于此问题，一种有效的方案是采用**订阅数据库的 Binlog** 实现数据同步
 
-<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185457610.png" alt="image-20210418185457610" style="zoom:50%;" />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gx2u9jj094j31c60padiu.jpg" alt="image-20211205121611997" style="zoom:50%;" />
 
 ​	现在很多开源工具（如**阿里的 Canal**等）可以模拟主从复制的协议。通过模拟协议读取主数据库的 Binlog 文件，从而获取主库的所有变更。对于这些变更，它们开放了各种接口供业务服务获取数据。
 
-<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185516743.png" alt="image-20210418185516743" style="zoom:50%;" />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gx2ugzh9ohj31hc0g00ud.jpg" alt="image-20211205121730145" style="zoom:50%;" />
 
 ​	将 Binlog 的中间件挂载至目标数据库上，就可以**实时获取该数据库的所有变更数据**。对这些变更数据解析后，便可**直接写入缓存里**。优点还有：
 
@@ -6132,7 +6132,7 @@ Raft使用**心跳机制**来触发选举。当server启动时，初始状态都
 
 **缺点**不可避免：1、增加复杂度 2、消耗缓存资源 3、需要筛选和压缩数据 4、极端情况数据丢失
 
-<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185549520.png" alt="image-20210418185549520" style="zoom:50%;" />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gx2u6ltwa4j314s0hs765.jpg" alt="image-20211205121850418" style="zoom:50%;" />
 
 可以通过异步校准方案进行补齐，但是会损耗数据库性能。但是此方案会隐藏中间件使用错误的细节，线上环境前期更重要的是记录日志排查在做后续优化，不能本末倒置。
 
@@ -6152,7 +6152,7 @@ Raft使用**心跳机制**来触发选举。当server启动时，初始状态都
 
 #### **多机房实时热备**
 
-<img src="/Users/suhongliu/Library/Application Support/typora-user-images/image-20210418185610597.png" alt="6.png" style="zoom:50%;" />
+<img src="https://tva1.sinaimg.cn/large/008i3skNly1gx2ufbmlkmj31fw0mutc1.jpg" alt="image-20211205122631299" style="zoom:50%;" />
 
 两套缓存集群可以分别部署到不同城市的机房。读服务也相应地部署到不同城市或不同分区。在承接请求时，不同机房或分区的读服务只依赖同样属性的缓存集群。此方案有两个好处。
 
